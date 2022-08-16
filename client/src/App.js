@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Auth from "./components/Auth";
 import Blogs from "./components/Blogs";
@@ -14,25 +14,61 @@ function App() {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const dispatch = useDispatch();
 
+  const ProtectedComponent = ({ login, children }) => {
+    if (!login) return <Navigate replace to="/login" />;
+    return children;
+  };
+
   useEffect(() => {
     if (localStorage.getItem("userId")) dispatch(authActions.login());
-  }, [dispatch]);
+    console.log(isLoggedIn);
+  }, []);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
         <Routes>
-          {isLoggedIn ? (
+          {/* {isLoggedIn ? (
             <>
-              <Route path="/blogs" element={<Blogs />} />
+              <Route exact path="/" element={<Blogs />} />
               <Route path="/blogs/add" element={<AddBlog />} />
               <Route path="/myBlogs" element={<UserBlogs />} />
               <Route path="/myBlogs/:id" element={<BlogDetail />} />
             </>
           ) : (
-            <Route path="/" element={<Auth />} />
-          )}
+            <Route path="/login" element={<Auth />} />
+          )} */}
+
+          <Route path="/login" element={<Auth />} />
+          <Route
+            exact
+            path="/*"
+            element={
+              <ProtectedComponent login={isLoggedIn} children={<Blogs />} />
+            }
+          />
+          <Route
+            path="/blogs/add"
+            element={
+              <ProtectedComponent login={isLoggedIn} children={<AddBlog />} />
+            }
+          />
+          <Route
+            path="/myBlogs"
+            element={
+              <ProtectedComponent login={isLoggedIn} children={<UserBlogs />} />
+            }
+          />
+          <Route
+            path="/myBlogs/:id"
+            element={
+              <ProtectedComponent
+                login={isLoggedIn}
+                children={<BlogDetail />}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

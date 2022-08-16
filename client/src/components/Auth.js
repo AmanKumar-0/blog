@@ -47,12 +47,12 @@ const Auth = () => {
         sendRequest("signup")
           .then((data) => localStorage.setItem("userId", data.user._id))
           .then(() => dispatch(authActions.login()))
-          .then(() => navigate("/blogs"));
+          .then(() => navigate("/"));
       } else {
         sendRequest("login")
           .then((data) => localStorage.setItem("userId", data.user._id))
           .then(() => dispatch(authActions.login()))
-          .then(() => navigate("/blogs"));
+          .then(() => navigate("/"));
       }
     }, 3000);
   };
