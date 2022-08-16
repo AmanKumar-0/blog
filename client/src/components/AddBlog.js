@@ -31,7 +31,7 @@ const AddBlog = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => navigate("/blogs"));
+    sendRequest().then(() => navigate("/"));
   };
   return (
     <div>

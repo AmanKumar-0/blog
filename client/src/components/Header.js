@@ -27,7 +27,7 @@ const Header = () => {
               value={value}
               onChange={(e, val) => setValue(val)}
             >
-              <Tab LinkComponent={Link} to="/blogs" label="All Blogs" />
+              <Tab LinkComponent={Link} to="/" label="All Blogs" />
               <Tab LinkComponent={Link} to="/myBlogs" label="My Blogs" />
               <Tab LinkComponent={Link} to="/blogs/add" label="Add Blogs" />
             </Tabs>
@@ -39,7 +39,7 @@ const Header = () => {
             <>
               <Button
                 LinkComponent={Link}
-                to="/"
+                to="/login"
                 variant="contained"
                 sx={{ margin: 1, borderRadius: 10 }}
                 color="warning"
@@ -48,7 +48,7 @@ const Header = () => {
               </Button>
               <Button
                 LinkComponent={Link}
-                to="/"
+                to="/login"
                 variant="contained"
                 sx={{ margin: 1, borderRadius: 10 }}
                 color="warning"
@@ -60,7 +60,7 @@ const Header = () => {
           {isLoggedIn && (
             <Button
               LinkComponent={Link}
-              to="/"
+              to="/login"
               variant="contained"
               sx={{ margin: 1, borderRadius: 10 }}
               color="warning"
