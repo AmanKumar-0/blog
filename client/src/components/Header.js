@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -16,6 +16,11 @@ const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    setValue(0);
+  }, [isLoggedIn]);
+
   return (
     <AppBar position="sticky" sx={{ background: "black" }}>
       <Toolbar>
