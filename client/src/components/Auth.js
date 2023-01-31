@@ -25,13 +25,18 @@ const Auth = () => {
   };
 
   const sendRequest = async (type = "login") => {
-    const res = await axios
-      .post(`/api/user/${type}`, {
+    const res = await toast.promise(
+      axios.post(`/api/user/${type}`, {
         name: inputs.name,
         email: inputs.email,
         password: inputs.password,
-      })
-      .catch((err) => toast(`Unable to ${type}`));
+      }),
+      {
+        pending: `Trying to ${type}`,
+        success: `${type} Successfull`,
+        error: `Unable to ${type}`,
+      }
+    );
 
     const data = await res.data;
     return data;
@@ -40,21 +45,18 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    toast(isSignup ? "Signing In " : "Logging In");
-
-    setTimeout(() => {
-      if (isSignup) {
-        sendRequest("signup")
-          .then((data) => localStorage.setItem("userId", data.user._id))
-          .then(() => dispatch(authActions.login()))
-          .then(() => navigate("/"));
-      } else {
-        sendRequest("login")
-          .then((data) => localStorage.setItem("userId", data.user._id))
-          .then(() => dispatch(authActions.login()))
-          .then(() => navigate("/"));
-      }
-    }, 3000);
+    // toast(isSignup ? "Signing In " : "Logging In");
+    if (isSignup) {
+      sendRequest("signup")
+        .then((data) => localStorage.setItem("userId", data.user._id))
+        .then(() => dispatch(authActions.login()))
+        .then(() => navigate("/"));
+    } else {
+      sendRequest("login")
+        .then((data) => localStorage.setItem("userId", data.user._id))
+        .then(() => dispatch(authActions.login()))
+        .then(() => navigate("/"));
+    }
   };
 
   return (
@@ -73,7 +75,7 @@ const Auth = () => {
           borderRadius={5}
         >
           <Typography variant="h2" padding={3} textAlign={"center"}>
-            {isSignup ? "Sign In" : "Login"}
+            {isSignup ? "Sign Up" : "Login"}
           </Typography>
           {isSignup && (
             <TextField
@@ -127,7 +129,7 @@ const Auth = () => {
             onClick={() => setIsSignup(!isSignup)}
             sx={{ borderRadius: 3, marginTop: 3 }}
           >
-            change To {isSignup ? "Login" : "Sign In"}
+            change To {isSignup ? "Login" : "Sign Up"}
           </Button>
         </Box>
       </form>
